@@ -1,9 +1,10 @@
+import json
+import time
 from faker import Faker
 from config import Config
 from src.modules.pg_faker import PgFaker
 from src.modules.pg_util import PgQuery
 from src.modules.utils import read_json, get_current_time_str
-import time
 
 LOCALE = Config.LOCALE
 TABLE = Config.TABLE
@@ -22,6 +23,9 @@ AUTH = {
   'password': Config.PG_PASSWORD,
   'database': Config.PG_DATABASE,
 }
+
+print json.dumps(AUTH, indent=2)
+print ''
 
 count = 0
 while True:
