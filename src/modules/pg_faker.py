@@ -7,9 +7,9 @@ class PgFaker(object):
 
   @staticmethod
   def parse_metadata(metadata):
-    columns = [md[0].lower() for md in metadata]
-    udts = [md[1].lower() for md in metadata]
-    is_defaults = [md[2] for md in metadata]
+    columns = [md['column'].lower() for md in metadata]
+    udts = [md['udt'].lower() for md in metadata]
+    is_defaults = [md['is_default'] for md in metadata]
     return columns, udts, is_defaults
 
   @staticmethod
@@ -38,20 +38,29 @@ class PgFaker(object):
     return value
   
   @staticmethod
-  def query_insert(metadata, table, fake=Factory.create()):
-    fake = Factory.create()
+  def query_insert(metadata, table, rows=1, styled=False, fake=Factory.create()):
+    # metadata
     columns, udts, is_defaults = PgFaker.parse_metadata(metadata)
-    values = [None for md in metadata]
-    for idx, t in enumerate(metadata):
-      values[idx] = PgFaker.get_value(udt=udts[idx], is_default=is_defaults[idx], fake=fake)
-    values = [v if v == 'default' else '\'%s\'' % v for v in values]
+    # colums
     columns_part = '(%s)' % (', '.join(columns))
-    values_part = '(%s)' % (', '.join(values))
-    query = 'INSERT INTO %s %s\nVALUES %s;' % (table, columns_part, values_part) 
+    # values
+    multiple_values = []
+    for r in range(rows):
+      values = [None for md in metadata]
+      for idx, t in enumerate(metadata):
+        values[idx] = PgFaker.get_value(udt=udts[idx], is_default=is_defaults[idx], fake=fake)
+      values = [v if v == 'default' else '\'%s\'' % v for v in values]
+      values_part = '(%s)' % (', '.join(values))
+      multiple_values += [values_part]
+    # query
+    query = 'INSERT INTO %s %s VALUES %s;' % (table, columns_part, ', '.join(multiple_values)) 
+    query = query if not styled else 'INSERT INTO %s\n  %s\nVALUES\n  %s;' % (table, columns_part, ',\n  '.join(multiple_values)) 
     return query
 
 if __name__ == '__main__':
+
   fake = Factory.create()
+
   print 'serial      = ', json.dumps(PgFaker.get_value('serial', False, fake))
   print 'name        = ', json.dumps(PgFaker.get_value('name', False, fake))
   print 'first_name  = ', json.dumps(PgFaker.get_value('first_name', False, fake))
@@ -67,3 +76,34 @@ if __name__ == '__main__':
   print 'timestamp   = ', json.dumps(PgFaker.get_value('timestamp', False, fake))
   print 'varchar(32) = ', json.dumps(PgFaker.get_value('varchar(32)', False, fake))
   print 'varchar(64) = ', json.dumps(PgFaker.get_value('varchar(64)', False, fake))
+
+  metadata = [
+    {
+      "column": "id",
+      "udt": "serial",
+      "is_default": True
+    },
+    {
+      "column": "email",
+      "udt": "email",
+      "is_default": False
+    },
+    {
+      "column": "description",
+      "udt": "text",
+      "is_default": False
+    },
+    {
+      "column": "created_at",
+      "udt": "timestamp",
+      "is_default": False
+    }
+  ]
+  columns, udts, is_defaults = PgFaker.parse_metadata(metadata)
+  print columns
+  print udts
+  print is_defaults
+
+  print ''
+  print PgFaker.query_insert(metadata=metadata, table='xxx', rows=1, fake=fake)
+  print PgFaker.query_insert(metadata=metadata, table='xxx', rows=5, fake=fake)
