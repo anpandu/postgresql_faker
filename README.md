@@ -1,6 +1,7 @@
 # PostgreSQL Faker
 
-Insert new rows into PostgreSQL DB.
+Sometimes we need to seed a certain PostgreSQL table with fake data for a certain period of time. 
+This app will do inserting task with configurable data and insertion interval.
 
 ## How to use
 
