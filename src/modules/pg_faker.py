@@ -21,6 +21,7 @@ class PgFaker(object):
         'name': BaseFaker.name(fake=fake),
         'first_name': BaseFaker.first_name(fake=fake),
         'last_name': BaseFaker.last_name(fake=fake),
+        'name': BaseFaker.name(fake=fake),
         'email': BaseFaker.email(fake=fake),
         'text': BaseFaker.text(fake=fake),
         'bs': BaseFaker.bs(fake=fake),

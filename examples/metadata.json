@@ -1,0 +1,32 @@
+[
+  {
+    "column": "id",
+    "udt": "serial",
+    "is_default": true
+  },
+  {
+    "column": "email",
+    "udt": "email",
+    "is_default": false
+  },
+  {
+    "column": "name",
+    "udt": "name",
+    "is_default": false
+  },
+  {
+    "column": "status",
+    "udt": "varchar(16)",
+    "is_default": false
+  },
+  {
+    "column": "description",
+    "udt": "text",
+    "is_default": false
+  },
+  {
+    "column": "created_at",
+    "udt": "timestamp",
+    "is_default": false
+  }
+]

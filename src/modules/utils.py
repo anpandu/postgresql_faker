@@ -1,3 +1,9 @@
+import json
+
+def read_json(filename):
+  file = open(filename)
+  return json.loads(file.read())
+
 def flatten(l):
   return [x for sublist in l for x in sublist]
 
