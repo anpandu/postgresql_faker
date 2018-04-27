@@ -54,7 +54,7 @@ docker logs -f postgresql_faker
 
 ### Metadata
 
-File below is the metadata for inserting new rows into users table.
+File below is the metadata for generating fake data and inserting it into users table.
 
 ```json
 [
@@ -110,6 +110,7 @@ PG_USER=admin
 PG_PASSWORD=admin123
 PG_DATABASE=mydb
 ```
+We can set table name, rows num per insert query, insertion interval, and locale.
 
 ### Result
 
