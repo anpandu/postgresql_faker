@@ -12,6 +12,7 @@ class Config(object):
   METADATA = os.getenv('METADATA', './examples/metadata.json')
   LOCALE = os.getenv('LOCALE', 'en_US')
   STYLED = bool(os.getenv('STYLED', 'False') == 'True')
+  IS_PROD = bool(os.getenv('IS_PROD', 'True') == 'True')
 
   PG_HOST = os.getenv('PG_HOST', 'localhost')
   PG_PORT = os.getenv('PG_PORT', '5432')

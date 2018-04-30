@@ -12,6 +12,7 @@ ROWS_NUM = Config.ROWS_NUM
 INTERVAL = Config.INTERVAL
 METADATA = Config.METADATA
 STYLED = Config.STYLED
+IS_PROD = Config.IS_PROD
 
 fake = Faker(LOCALE)
 metadata = read_json(METADATA)
@@ -40,7 +41,8 @@ while True:
     print '[%s][%s]\n%s\n' % (get_current_time_str(), count, insert_query)
   else:
     print '[%s][%s] %s' % (get_current_time_str(), count, insert_query)
-  PgQuery.execute(auth=AUTH, query=insert_query)
+  if IS_PROD:
+    PgQuery.execute(auth=AUTH, query=insert_query)
   count += 1
   time.sleep(INTERVAL)
 
