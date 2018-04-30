@@ -10,6 +10,10 @@ class BaseFaker(object):
     return 'default'
 
   @staticmethod
+  def random(options=[]):
+    return options[randrange(len(options))]
+
+  @staticmethod
   def uuid():
     return str(uuid4())
   

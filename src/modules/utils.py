@@ -5,6 +5,9 @@ def read_json(filename):
   file = open(filename)
   return json.loads(file.read())
 
+def print_json (data):
+  print json.dumps(data, indent=2)
+
 def flatten(l):
   return [x for sublist in l for x in sublist]
 

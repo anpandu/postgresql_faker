@@ -1,5 +1,7 @@
 start:
 		sh -c "python insert_continuously.py"
+test:
+		sh -c "TESTING=True nose2 -v"
 build:
 		sh -c "docker build . -t anpandu/postgresql_faker"
 build-no-cache:
