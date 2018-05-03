@@ -63,8 +63,9 @@ class BaseFaker(object):
   
   @staticmethod  
   def timestamp():
+    start = 0
     end = 4133980799000
-    now = randrange(end) / 1000.0
+    now = (start + randrange(end - start)) / 1000.0
     now = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
     return now
   
