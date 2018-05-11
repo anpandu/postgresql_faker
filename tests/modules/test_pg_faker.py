@@ -30,7 +30,11 @@ class TestPgFaker(unittest.TestCase):
       },
       {
         "column": "created_at",
-        "udt": "timestamp"
+        "udt": "timestamp",
+        "options": [
+          "2000-01-01T00:00:00.000Z",
+          "2000-01-01T23:59:59.999Z"
+        ]
       },
       {
         "column": "var1",
@@ -41,12 +45,17 @@ class TestPgFaker(unittest.TestCase):
     self.assertEqual(columns, ['id', 'email', 'description', 'created_at', 'var1'])
     self.assertEqual(udts, ['serial', 'email', 'text', 'timestamp', 'text'])
     self.assertEqual(is_defaults, [True, False, False, False, False])
-    self.assertEqual(options, [[], [], [], [], ["a", "b", "c"]])
+    self.assertEqual(options, [[], [], [], ["2000-01-01T00:00:00.000Z","2000-01-01T23:59:59.999Z"], ["a", "b", "c"]])
  
   def test_get_value(self):
     self.assertEqual('default', PgFaker.get_value('text', is_default=True))
     self.assertTrue(PgFaker.get_value('text', options=[1, 2, 3]) in [1, 2, 3])
     self.assertTrue(len(PgFaker.get_value('varchar(16)')) <= 16)
+
+    opts = ['2000-01-01T00:00:00.000Z', '2000-01-01T23:59:59.999Z']
+    res = PgFaker.get_value('timestamp', options=opts)
+    self.assertTrue(res >= opts[0])
+    self.assertTrue(res <= opts[1])
  
   def test_query_insert(self):
     # metadata = [
@@ -65,7 +74,11 @@ class TestPgFaker(unittest.TestCase):
     #   },
     #   {
     #     "column": "created_at",
-    #     "udt": "timestamp"
+    #     "udt": "timestamp",
+    #     "options": [
+    #       "2000-01-01T00:00:00.000Z",
+    #       "2000-01-01T23:59:59.999Z"
+    #     ]
     #   },
     #   {
     #     "column": "var1",

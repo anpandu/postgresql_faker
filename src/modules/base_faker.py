@@ -1,7 +1,7 @@
 from faker import Factory
 from uuid import uuid4
 from random import randrange
-import datetime 
+from datetime import datetime 
 
 class BaseFaker(object):
 
@@ -62,11 +62,12 @@ class BaseFaker(object):
     return fake.sentence()
   
   @staticmethod  
-  def timestamp():
-    start = 0
-    end = 4133980799000
-    now = (start + randrange(end - start)) / 1000.0
-    now = datetime.datetime.fromtimestamp(now).strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+  def timestamp(start='1970-01-01T00:00:00.000Z', end='2099-12-12T23:59:59.999Z'):
+    fmt = '%Y-%m-%dT%H:%M:%S.%fZ'
+    start_ts = float(datetime.strptime(start, fmt).strftime('%s.%f')) * 1000.0
+    end_ts = float(datetime.strptime(end, fmt).strftime('%s.%f')) * 1000.0
+    now = (start_ts + randrange(end_ts - start_ts)) / 1000.0
+    now = datetime.fromtimestamp(now).strftime(fmt)
     return now
   
   @staticmethod  

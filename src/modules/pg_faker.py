@@ -18,7 +18,10 @@ class PgFaker(object):
     if is_default:
       return BaseFaker.default()
     if len(options) > 0:
-      return BaseFaker.random(options=options)
+      if udt == 'timestamp':
+        return BaseFaker.timestamp(start=options[0], end=options[1])
+      else:
+        return BaseFaker.random(options=options)
     if 'varchar' in udt:
       length = int(udt[8:-1])
       seed = BaseFaker.bs() if length <= 32 else BaseFaker.sentence()

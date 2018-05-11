@@ -24,5 +24,12 @@ class TestBaseFaker(unittest.TestCase):
     res = BaseFaker.random(options)
     self.assertTrue(res in options)
 
+    # datetime
+    start = '2000-01-01T00:00:00.000Z'
+    end = '2000-01-01T23:59:59.999Z'
+    res = BaseFaker.timestamp(start, end)
+    self.assertTrue(res >= start)
+    self.assertTrue(res <= end)
+
 if __name__ == "__main__":
   unittest.main()
