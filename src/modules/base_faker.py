@@ -66,7 +66,8 @@ class BaseFaker(object):
     fmt = '%Y-%m-%dT%H:%M:%S.%fZ'
     start_ts = float(datetime.strptime(start, fmt).strftime('%s.%f')) * 1000.0
     end_ts = float(datetime.strptime(end, fmt).strftime('%s.%f')) * 1000.0
-    now = (start_ts + randrange(end_ts - start_ts)) / 1000.0
+    range_ts = randrange(end_ts - start_ts) if end_ts > start_ts else 0
+    now = (start_ts + range_ts) / 1000.0
     now = datetime.fromtimestamp(now).strftime(fmt)
     return now
   
